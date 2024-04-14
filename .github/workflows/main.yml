@@ -8,7 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
+    steps:
     - uses: dawidd6/action-download-artifact@v3.1.2
       with:
         repo: tiann/KernelSU
