@@ -11,16 +11,18 @@ jobs:
     permissions:
       contents: write
     steps:
-    - uses: dawidd6/action-download-artifact@v3.1.2
+    - name: Download KO file
+      uses: dawidd6/action-download-artifact@v3.1.2
       with:
         repo: tiann/KernelSU
         branch: main
-        workflow: build-lkm.yml
+        workflow: build-manager.yml
         workflow_conclusion: success
         name: android14-6.1-lkm
         path: .
 
-    - uses: dawidd6/action-download-artifact@v3.1.2
+    - name: Download ksud file
+      uses: dawidd6/action-download-artifact@v3.1.2
       with:
         repo: tiann/KernelSU
         branch: main
