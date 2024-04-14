@@ -1,0 +1,65 @@
+name: Build KernelSU LKM zip
+
+on:
+  schedule:
+    - cron: '0 23 * * *'
+  workflow_dispatch:
+  push:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    - uses: dawidd6/action-download-artifact@v3.1.2
+      with:
+        repo: tiann/KernelSU
+        branch: main
+        workflow: build-lkm.yml
+        workflow_conclusion: success
+        name: android14-6.1-lkm
+        path: .
+
+    - uses: dawidd6/action-download-artifact@v3.1.2
+      with:
+        repo: tiann/KernelSU
+        branch: main
+        workflow: build-manager.yml
+        workflow_conclusion: success
+        name: ksud-aarch64-linux-android
+        path: .
+
+    - name: Prepare flashing zip file
+      run: |
+        git clone https://github.com/snowwolf725/AnyKernel3 -b oneplus12 --depth=1
+        rm -rf AnyKernel3/.git
+        mv ksud-aarch64-linux-android/release/ksud AnyKernel3/tools/
+        chmod +x AnyKernel3/tools/ksud
+        mv android14-6.1-lkm.ko AnyKernel3/kernelsu.ko
+
+    - name: Get Version
+      id: get_version
+      run: |
+        git clone https://github.com/tiann/KernelSU kernelsu
+        cd kernelsu
+        git pull
+        git rev-list --count HEAD
+        echo "VERSION=$(expr $(git rev-list --count HEAD) + 10200)" >> $GITHUB_OUTPUT
+        cd ../
+
+    - name: Create AK3 zip
+      run: |
+       cd AnyKernel3
+       zip -r ../OP12-KernelSU-${{ steps.get_version.outputs.VERSION }}.zip *
+       cd ..
+
+    - name: Upload to Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          OP12-KernelSU-${{ steps.get_version.outputs.VERSION }}.zip
+        name: OnePlus12_kernelsu-${{ steps.get_version.outputs.VERSION }}
+        tag_name: ${{ steps.get_version.outputs.VERSION }}
+        body: |
+          Device: Oneplus 12
+          Target: OOS14, COS14
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
