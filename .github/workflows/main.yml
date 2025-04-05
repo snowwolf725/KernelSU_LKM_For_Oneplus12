@@ -64,6 +64,6 @@ jobs:
         tag_name: ${{ steps.get_version.outputs.VERSION }}
         body: |
           Device: Oneplus 12
-          Target: OOS14, COS14
+          Target: OOS14/15, COS14/15
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
