@@ -59,7 +59,7 @@ jobs:
       uses: dawidd6/action-download-artifact@v3.1.2
       with:
         repo: KernelSU-Next/KernelSU-Next
-        branch: main
+        branch: dev
         workflow: build-manager-ci.yml
         workflow_conclusion: success
         name: android14-6.1-lkm
