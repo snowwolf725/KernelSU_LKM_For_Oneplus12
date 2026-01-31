@@ -11,16 +11,6 @@ jobs:
     permissions:
       contents: write
     steps:
-    - name: Download KO file
-      uses: dawidd6/action-download-artifact@v3.1.2
-      with:
-        repo: tiann/KernelSU
-        branch: main
-        workflow: build-manager.yml
-        workflow_conclusion: success
-        name: android14-6.1-lkm
-        path: .
-
     - name: Download ksud file
       uses: dawidd6/action-download-artifact@v3.1.2
       with:
@@ -37,7 +27,6 @@ jobs:
         rm -rf AnyKernel3/.git
         mv aarch64-linux-android/release/ksud AnyKernel3/tools/
         chmod +x AnyKernel3/tools/ksud
-        mv android14-6.1_kernelsu.ko AnyKernel3/kernelsu.ko
 
     - name: Get Version
       id: get_version
@@ -49,10 +38,72 @@ jobs:
         echo "VERSION=$(expr $(git rev-list --count HEAD) + 10200)" >> $GITHUB_OUTPUT
         cd ../
 
-    - name: Create AK3 zip
+    - name: Download KernelSU KO file
+      uses: dawidd6/action-download-artifact@v3.1.2
+      with:
+        repo: tiann/KernelSU
+        branch: main
+        workflow: build-manager.yml
+        workflow_conclusion: success
+        name: android14-6.1-lkm
+        path: .
+        
+    - name: Create KernelSU AK3 zip
       run: |
+       mv android14-6.1_kernelsu.ko AnyKernel3/kernelsu.ko
        cd AnyKernel3
        zip -r ../OP12-KernelSU-${{ steps.get_version.outputs.VERSION }}.zip *
+       cd ..
+
+    - name: Download KernelSU Next KO file
+      uses: dawidd6/action-download-artifact@v3.1.2
+      with:
+        repo: KernelSU-Next/KernelSU-Next
+        branch: main
+        workflow: build-manager-ci.yml
+        workflow_conclusion: success
+        name: android14-6.1-lkm
+        path: .
+        
+    - name: Create KernelSU NEXT AK3 zip
+      run: |
+       mv android14-6.1_kernelsu.ko AnyKernel3/kernelsu.ko
+       cd AnyKernel3
+       zip -r ../OP12-KernelSUNext-${{ steps.get_version.outputs.VERSION }}.zip *
+       cd ..
+       
+    - name: Download SukiSU KO file
+      uses: dawidd6/action-download-artifact@v3.1.2
+      with:
+        repo: SukiSU-Ultra/SukiSU-Ultra
+        branch: main
+        workflow: build-manager.yml
+        workflow_conclusion: success
+        name: android14-6.1-lkm
+        path: .
+
+    - name: Create SukiSU AK3 zip
+      run: |
+       mv android14-6.1_kernelsu.ko AnyKernel3/kernelsu.ko
+       cd AnyKernel3
+       zip -r ../OP12-SukiSU-${{ steps.get_version.outputs.VERSION }}.zip *
+       cd ..
+
+    - name: Download ReSukiSU KO file
+      uses: dawidd6/action-download-artifact@v3.1.2
+      with:
+        repo: ReSukiSU/ReSukiSU
+        branch: main
+        workflow: build-manager.yml
+        workflow_conclusion: success
+        name: android14-6.1-lkm
+        path: .
+
+    - name: Create ReSukiSU AK3 zip
+      run: |
+       mv android14-6.1_kernelsu.ko AnyKernel3/kernelsu.ko
+       cd AnyKernel3
+       zip -r ../OP12-ReSukiSU-${{ steps.get_version.outputs.VERSION }}.zip *
        cd ..
 
     - name: Upload to Release
@@ -60,10 +111,13 @@ jobs:
       with:
         files: |
           OP12-KernelSU-${{ steps.get_version.outputs.VERSION }}.zip
+          OP12-KernelSUNext-${{ steps.get_version.outputs.VERSION }}.zip
+          OP12-SukiSU-${{ steps.get_version.outputs.VERSION }}.zip
+          OP12-ReSukiSU-${{ steps.get_version.outputs.VERSION }}.zip
         name: OnePlus12_kernelsu-${{ steps.get_version.outputs.VERSION }}
         tag_name: ${{ steps.get_version.outputs.VERSION }}
         body: |
           Device: Oneplus 12
-          Target: OOS14/15, COS14/15
+          Target: OOS14/15/16, COS14/15/16
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
