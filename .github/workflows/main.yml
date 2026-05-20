@@ -25,7 +25,7 @@ jobs:
       run: |
         git clone https://github.com/snowwolf725/AnyKernel3 -b oneplus12 --depth=1
         rm -rf AnyKernel3/.git
-        mv aarch64-linux-android/release/ksud AnyKernel3/tools/
+        mv ksud AnyKernel3/tools/
         chmod +x AnyKernel3/tools/ksud
 
     - name: Get Version
