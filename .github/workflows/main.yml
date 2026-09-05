@@ -45,7 +45,7 @@ jobs:
         branch: main
         workflow: build-manager.yml
         workflow_conclusion: success
-        name: android14-6.1-lkm
+        name: aarch64-android14-6.1-lkm
         path: .
         
     - name: Create KernelSU AK3 zip
