@@ -90,21 +90,21 @@ jobs:
        zip -r ../OP12-SukiSU-${{ steps.get_version.outputs.VERSION }}.zip *
        cd ..
 
-    - name: Download ReSukiSU KO file
+    - name: Download BakaSU KO file
       uses: dawidd6/action-download-artifact@v24
       with:
-        repo: ReSukiSU/ReSukiSU
+        repo: Baka-SU/BakaSU
         branch: main
         workflow: build-manager.yml
         workflow_conclusion: success
         name: aarch64-android14-6.1-lkm
         path: .
 
-    - name: Create ReSukiSU AK3 zip
+    - name: Create BakaSU AK3 zip
       run: |
        mv android14-6.1_kernelsu.ko AnyKernel3/kernelsu.ko
        cd AnyKernel3
-       zip -r ../OP12-ReSukiSU-${{ steps.get_version.outputs.VERSION }}.zip *
+       zip -r ../OP12-BakaSU-${{ steps.get_version.outputs.VERSION }}.zip *
        cd ..
 
     - name: Upload to Release
