@@ -67,6 +67,7 @@ jobs:
         
     - name: Create KernelSU NEXT AK3 zip
       run: |
+       ls *.ko
        mv android14-6.1_kernelsu.ko AnyKernel3/kernelsu.ko
        cd AnyKernel3
        zip -r ../OP12-KernelSUNext-${{ steps.get_version.outputs.VERSION }}.zip *
