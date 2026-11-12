@@ -114,11 +114,11 @@ jobs:
           OP12-KernelSU-${{ steps.get_version.outputs.VERSION }}.zip
           OP12-KernelSUNext-${{ steps.get_version.outputs.VERSION }}.zip
           OP12-SukiSU-${{ steps.get_version.outputs.VERSION }}.zip
-          OP12-ReSukiSU-${{ steps.get_version.outputs.VERSION }}.zip
+          OP12-BakaSU-${{ steps.get_version.outputs.VERSION }}.zip
         name: OnePlus12_kernelsu-${{ steps.get_version.outputs.VERSION }}
         tag_name: ${{ steps.get_version.outputs.VERSION }}
         body: |
           Device: Oneplus 12
-          Target: OOS14/15/16, COS14/15/16
+          Target: OOS14/15/16, COS14/15/16/17
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
