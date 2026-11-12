@@ -11,23 +11,23 @@ jobs:
     permissions:
       contents: write
     steps:
-    - name: Download ksud file
-      uses: dawidd6/action-download-artifact@v3.1.2
-      with:
-        repo: tiann/KernelSU
-        branch: main
-        workflow: build-manager.yml
-        workflow_conclusion: success
-        name: ksud-aarch64-linux-android
-        path: .
+#    - name: Download ksud file
+#      uses: dawidd6/action-download-artifact@v3.1.2
+#      with:
+#        repo: tiann/KernelSU
+#        branch: main
+#        workflow: build-manager.yml
+#        workflow_conclusion: success
+#        name: ksud-aarch64-linux-android
+#        path: .
 
     - name: Prepare flashing zip file
       run: |
         git clone https://github.com/snowwolf725/AnyKernel3 -b oneplus12 --depth=1
         rm -rf AnyKernel3/.git
-        mv ksud AnyKernel3/tools/
         chmod +x AnyKernel3/tools/ksud
-
+#        mv ksud AnyKernel3/tools/
+        
     - name: Get Version
       id: get_version
       run: |
