@@ -76,7 +76,7 @@ jobs:
     - name: Download SukiSU KO file
       uses: dawidd6/action-download-artifact@v24
       with:
-        repo: SukiSU-Ultra/SukiSU-Ultra
+        repo: SukiSU-Nova/SukiSU-Nova
         branch: main
         workflow: build-manager.yml
         workflow_conclusion: success
